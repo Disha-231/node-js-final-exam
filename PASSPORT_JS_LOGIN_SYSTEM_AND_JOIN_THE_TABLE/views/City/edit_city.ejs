@@ -1,0 +1,132 @@
+<%- include('../header') %>
+
+    <div class="page-wrapper">
+        <!-- ============================================================== -->
+        <!-- Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <div class="page-breadcrumb">
+            <div class="row">
+                <div class="col-12 d-flex no-block align-items-center">
+                    <h4 class="page-title">Form</h4>
+                    <div class="ms-auto text-end">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">
+                                    Library
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid">
+            <!-- ============================================================== -->
+            <!-- Start Page Content -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                                <form action="/city/updatecitypage" method="post" class="form-horizontal">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Edit state</h4>
+                                        <input type="hidden" value="<%= single.id%>" name="editid">
+                                        <div class="form-group row">
+                                            <label for="fname"
+                                                class="col-sm-3 text-end control-label col-form-label">contry</label>
+                                            <div class="col-sm-9">
+                                                <select name="contry" onchange="contryFilter()" id="contryId" class="form-control" id="fname">
+                                                    <option >---select contry--</option>
+                                                    <% contry.map((cate)=>{ %>
+                                                        <option <% if(cate.contry == single.contryId?.contry) { %> selected <% } %>value="<%= cate.id %>"><%= cate.contry %></option>
+                                                      <% }) %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="fname"
+                                                class="col-sm-3 text-end control-label col-form-label">state</label>
+                                            <div class="col-sm-9">
+                                                <select name="state"  id="stateId" class="form-control" id="fname">
+                                                    <!-- <option >---select Subategory--</option> -->
+                                                    <% state.map((val) =>{%>
+                                                        <option <% if(val.state == single.stateId.state) { %> selected <% } %>value="<%= val.id %>"><%= val.state %></option>
+                                                     <% }) %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="fname"
+                                                class="col-sm-3 text-end control-label col-form-label">city</label>
+                                           
+                                            <div class="col-sm-9">
+                                                <input type="text" name="city" value="<%= single.city%>" class="form-control" id="fname"
+                                                    placeholder="city Name Here" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="border-top">
+                                        <div class="card-body">
+                                            <button type="submit" class="btn btn-primary">
+                                                Submit
+                                            </button>
+                                            <a href="/city" class="btn btn-info">View</a>
+                                        </div>
+                                    </div>
+                                </form>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Container fluid  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <footer class="footer text-center">
+            All Rights Reserved by Matrix-admin. Designed and Developed by
+            <a href="https://www.wrappixel.com">WrapPixel</a>.
+        </footer>
+        <!-- ============================================================== -->
+        <!-- End footer -->
+        <!-- ============================================================== -->
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      function contryFilter() {
+        var id = document.getElementById('contryId').value;
+        console.log(id);
+        
+        $.ajax({
+          url: `http://localhost:8000/city/contryWiseFilter?id=${id}`,
+          type: 'GET',
+          dataType: 'json',
+          success: function (res) {
+            let record = res.contry
+            // 
+            let tbl = "";
+            var ans = record.map((val) => {
+              tbl += `
+                      <option  value=${val._id}>${val.state}</option>
+                     `
+            })
+            document.getElementById('stateId').innerHTML = tbl; 
+          }
+        });
+      }
+    </script>
+
+    <%- include('../footer') %>
